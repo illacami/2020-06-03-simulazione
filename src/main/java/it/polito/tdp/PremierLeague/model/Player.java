@@ -3,7 +3,16 @@ package it.polito.tdp.PremierLeague.model;
 public class Player {
 	Integer playerID;
 	String name;
+	double mediaGoal;
 	
+	public double getMediaGoal() {
+		return mediaGoal;
+	}
+
+	public void setMediaGoal(double mediaGoal) {
+		this.mediaGoal = mediaGoal;
+	}
+
 	public Player(Integer playerID, String name) {
 		super();
 		this.playerID = playerID;

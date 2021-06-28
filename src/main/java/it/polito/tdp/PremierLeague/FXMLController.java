@@ -5,9 +5,12 @@
 package it.polito.tdp.PremierLeague;
 
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.PremierLeague.model.Model;
+import it.polito.tdp.PremierLeague.model.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -44,17 +47,52 @@ public class FXMLController {
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
+    	
+    	double avgGoal = -1.0;
+    	try {
+    		String text = txtGoals.getText();
+    		avgGoal = Double.parseDouble(text);
+    	}catch(NumberFormatException e) {
+    		txtResult.setText("ERRORE: inserire un valore numerico con usando \".\" per le cifre decimali");
+    		return;
+    	}
+    	
+    	if(avgGoal>0) {
+    		model.creaGrafo(avgGoal);
+    		txtResult.appendText("\nGrafo creato\n# Vertici: "+model.getVertexSize()+"\n# Archi: "+model.getEdgeSize()+"\n");
+    	}
 
     }
 
     @FXML
     void doDreamTeam(ActionEvent event) {
 
+    	int maxPlayer = 0;
+    	try {
+    		String text = txtK.getText();
+    		maxPlayer = Integer.parseInt(text);
+    	}catch(NumberFormatException e) {
+    		txtResult.setText("ERRORE: inserire un valore numerico nella casella \"# giocatori(k)\"");
+    	}
+    	 txtResult.appendText("\n \n***** DREAM TEAM *****");
+    	for(Player p : model.dreamTeam(maxPlayer))
+    		txtResult.appendText("\n"+p);
     }
 
     @FXML
     void doTopPlayer(ActionEvent event) {
-
+    	
+    	List<Player> classifica = new LinkedList<Player>(model.getTopPlayer());
+    	
+    	txtResult.appendText("\nTOP PLAYER: "+classifica.get(0)+"\n");
+    	
+    	classifica.remove(0);
+    	
+    	txtResult.appendText("\nAVVERSARI BATTUTI: \n");
+    	
+    	for(Player p : classifica)
+    		txtResult.appendText("\n"+p);
+    	
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
